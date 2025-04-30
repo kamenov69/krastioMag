@@ -58,13 +58,10 @@ tasks.cpp - дефинирани два периодични процеса св
 #include "Cmd.h"
 #include "commands.h"
 #include "analog.h"
+#include "distance.h"
 
 
 
-#include <Wire.h>
-#include <VL6180X.h>
-
-VL6180X sensor;
  
 /*
 - краката влючени в масива са каналите на волтметъра
@@ -80,7 +77,7 @@ AnalogInput apins[] = {AnalogInput(A0),   //An array with all used analog pins
 uint8_t mode = MIN_MODE; 
 
 void setup() {
-
+  distance_init();
   init_AnalogImputs_static_vals(); // -> analog.cpp 
   Serial.begin(9600); // Default monistor_speeed = 9600
   //Serial.begin(115200); // In platformio.ini must be included 
@@ -89,8 +86,7 @@ void setup() {
   cmdInit(&Serial);     // Init Cmd library with a stream address
   add_commands();       // Adds commands to Cmd -> commands.cpp 
 
-  sensor.init();
-  sensor.configureDefault();
+  
 
 }
 

@@ -62,6 +62,9 @@ format:
 #include "analog.h"
 #include "board.h"
 #include "tasks.h"
+#include "distance.h"
+
+
 
 void _ee_read_analog_static_vals(int args_num,char **args){
   ee_read_analog_static_vals();
@@ -228,6 +231,9 @@ void _tst_val(int arg_cnt, char **args){
 
 void add_commands(void)
 {
+  // distance sensor 
+  
+  cmdAdd("mm",distance_read);
   //add("serial_command", pointer to function);
   cmdAdd("hello",_hello); // serial return strings with name and processor
   cmdAdd("args", _args);  // test cmd
@@ -256,7 +262,7 @@ void _args(int arg_cnt, char **args)
 void _hello(int arg_cnt, char **args)
 {
   Stream *s = cmdGetStream();
-  s->println("megaatmega2560");
+  s->println("atmega2560");
   s->println(__NAME);
   s->println();
 }
