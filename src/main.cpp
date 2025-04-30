@@ -60,6 +60,11 @@ tasks.cpp - дефинирани два периодични процеса св
 #include "analog.h"
 
 
+
+#include <Wire.h>
+#include <VL6180X.h>
+
+VL6180X sensor;
  
 /*
 - краката влючени в масива са каналите на волтметъра
@@ -83,6 +88,10 @@ void setup() {
   tasks_setup();        // All tasks setup - > tasks.cpp 
   cmdInit(&Serial);     // Init Cmd library with a stream address
   add_commands();       // Adds commands to Cmd -> commands.cpp 
+
+  sensor.init();
+  sensor.configureDefault();
+
 }
 
 // 

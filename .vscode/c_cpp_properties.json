@@ -11,6 +11,8 @@
                 "/home/kamen/Documents/PlatformIO/Projects/krastioMag/include",
                 "/home/kamen/Documents/PlatformIO/Projects/krastioMag/src",
                 "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/Ticker",
+                "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/VL6180X",
+                "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/CmdArduino-master",
                 "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                 "/home/kamen/.platformio/packages/framework-arduino-avr/cores/arduino",
@@ -18,7 +20,6 @@
                 "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                 "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                 "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 ""
             ],
             "browse": {
@@ -27,6 +28,8 @@
                     "/home/kamen/Documents/PlatformIO/Projects/krastioMag/include",
                     "/home/kamen/Documents/PlatformIO/Projects/krastioMag/src",
                     "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/Ticker",
+                    "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/VL6180X",
+                    "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "/home/kamen/Documents/PlatformIO/Projects/krastioMag/lib/CmdArduino-master",
                     "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/EEPROM/src",
                     "/home/kamen/.platformio/packages/framework-arduino-avr/cores/arduino",
@@ -34,12 +37,11 @@
                     "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/HID/src",
                     "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/SPI/src",
                     "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/SoftwareSerial/src",
-                    "/home/kamen/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     ""
                 ]
             },
             "defines": [
-                "PLATFORMIO=60116",
+                "PLATFORMIO=60118",
                 "ARDUINO_AVR_MEGA2560",
                 "F_CPU=16000000L",
                 "ARDUINO_ARCH_AVR",

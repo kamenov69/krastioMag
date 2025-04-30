@@ -22,7 +22,7 @@
 // --- Pins Deffinitions 
 
 #define LED       LED_BUILTIN
-#define APIN_MAX 4
+#define APIN_MAX  4
 /*
 in main.cpp
 
