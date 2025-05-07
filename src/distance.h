@@ -2,5 +2,5 @@
 #define DISTANCE_H
 
 void distance_init();
-void distance_read(int args_num,char **args);
+void _command_distnce_read(int args_num,char **args);
 #endif // DISTANCE_H

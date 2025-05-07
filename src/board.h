@@ -25,7 +25,6 @@
 #define APIN_MAX  4
 /*
 in main.cpp
-
 AnalogInput apins[] = {AnalogInput(A0), 
                        AnalogInput(A1), 
                        AnalogInput(A2), 
@@ -33,14 +32,17 @@ AnalogInput apins[] = {AnalogInput(A0),
 */
 extern class AnalogInput apins[];
 
+
+#define DISTANCE_ENABLE_PIN_0 18
+#define DISTANCE_ENABLE_PIN_1 19
+// SDA    20
+// SCL    21
+
+
 // --- Operation modes
 #define MIN_MODE 0
 #define MAX_MODE 3
 
 extern uint8_t mode;
-
-
-
-//analog period 
 
 #endif
