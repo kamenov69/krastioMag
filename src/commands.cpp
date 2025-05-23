@@ -234,8 +234,8 @@ void add_commands(void)
   
   //add("serial_command", pointer to function);
   // distance sensor 
-  cmdAdd("rng", _command_distance_range);
-  cmdAdd("mm",_command_distnce_read);
+  cmdAdd("drng", _command_distance_range);
+  cmdAdd("dmm",_command_distnce_read);
   cmdAdd("hello",_hello); // serial return strings with name and processor
   cmdAdd("args", _args);  // test cmd
   cmdAdd("mode", _mode);  // test cmd
