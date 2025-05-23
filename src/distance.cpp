@@ -8,9 +8,6 @@
 VL6180X sensor;
 
 
-
-
-
 void distance_init(){
  
   // I2C setup
@@ -67,4 +64,18 @@ void _command_distnce_read(int args_num,char **args){
     
 
   }
+
+ void  _command_distance_range(int args_num,char **args){
+    Stream *s = cmdGetStream();
+    if( args_num > 1){
+        uint8_t tmp_int1 = cmdStr2Num(args[1], 10);
+        if((tmp_int1 < 1) || (tmp_int1 > 3)){
+            tmp_int1 = 1;         
+        } 
+        sensor.setScaling(tmp_int1); 
+    }
+    s->println(sensor.getScaling());
+    s->println();
+  }
+
   
