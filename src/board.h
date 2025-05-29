@@ -1,7 +1,7 @@
 #ifndef __BOARD_H
 #define __BOARD_H
 
-#define __NAME "Krastio Magnet"
+#define __NAME "Krastiomag"
 #include <Arduino.h>
 
 // analogReference()

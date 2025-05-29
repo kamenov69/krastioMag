@@ -47,9 +47,6 @@
 #include "HardwareSerial.h"
 #include "Cmd.h"
 
-
-bool echo = true;
-
 // command line message buffer and pointer
 static uint8_t msg[MAX_MSG_SIZE];
 static uint8_t *msg_ptr;
@@ -58,12 +55,12 @@ static uint8_t *msg_ptr;
 static cmd_t *cmd_tbl_list, *cmd_tbl;
 
 // text strings for command prompt (stored in flash)
-const char cmd_banner[] PROGMEM = "*************** CMD *******************";
+//const char cmd_banner[] PROGMEM = "*************** CMD *******************";
 const char cmd_prompt[] PROGMEM = ">>";
-const char cmd_unrecog[] PROGMEM = "CMD: Command not recognized.";
+const char cmd_unrecog[] PROGMEM = "Command not recognized.";
 
 static Stream* stream;
-
+static bool echo = __INIT__ECHO;
 /**************************************************************************/
 /*!
     Generate the main command prompt
@@ -71,15 +68,19 @@ static Stream* stream;
 /**************************************************************************/
 void cmd_display()
 {
-    char buf[50];
+    char buf[25];
 
-    if(echo) stream->println();
-
+    stream->println();
     //strcpy_P(buf, cmd_banner);
     //stream->println(buf);
-
-    if(echo) strcpy_P(buf, cmd_prompt);
-    if(echo) stream->print(buf);
+    //stream->println();
+    while(stream->available()) stream->read();  // Clear the input buffer before a new command
+                                                 // reason: TIVAC bug, esp32??? 
+    if(echo){
+      strcpy_P(buf, cmd_prompt);
+      stream->print(buf);
+    }
+   
 }
 
 /**************************************************************************/
@@ -97,6 +98,7 @@ void cmd_parse(char *cmd)
     cmd_t *cmd_entry;
 
     fflush(stdout);
+   
 
     // parse the command line statement and break it up into space-delimited
     // strings. the array of strings will be saved in the argv array.
@@ -109,6 +111,20 @@ void cmd_parse(char *cmd)
     // save off the number of arguments for the particular command.
     argc = i;
 
+#ifdef __ADDRESS__
+    if (!strcmp(argv[0], __ADDRESS__)){
+        for (cmd_entry = cmd_tbl; cmd_entry != NULL; cmd_entry = cmd_entry->next)
+        {
+            if (!strcmp(argv[1], cmd_entry->cmd))
+            {
+                cmd_entry->func(argc-1, argv+1);
+                cmd_display();
+                return;
+            }
+        } 
+    }
+
+#else
     // parse the command table for valid command. used argv[0] which is the
     // actual command name typed in at the prompt
     for (cmd_entry = cmd_tbl; cmd_entry != NULL; cmd_entry = cmd_entry->next)
@@ -120,12 +136,17 @@ void cmd_parse(char *cmd)
             return;
         }
     }
+#endif
 
     // command not recognized. print message and re-generate prompt.
-    if(echo) strcpy_P(buf, cmd_unrecog);
-    if(echo) stream->println(buf);
+    if(echo){
+        strcpy_P(buf, cmd_unrecog);
+        stream->println(buf);
+        cmd_display();
 
-    cmd_display();
+    }
+
+    
 }
 
 /**************************************************************************/
@@ -141,8 +162,14 @@ void cmd_handler()
 
     switch (c)
     {
-    case '.':
     case '\r':
+    case '\n': // Added for telnet and BT. 
+    case '#':  // In any case and any set. 
+        
+        if(msg == msg_ptr) break; // A empty massage cuuse an error on
+                                  // ESP32 generate an error if buffer is empty 
+
+
         // terminate the msg and reset the msg ptr. then send
         // it to the handler for processing.
         *msg_ptr = '\0';
@@ -151,10 +178,10 @@ void cmd_handler()
         msg_ptr = msg;
         break;
 
-    case '\n':
+    //case '\n':
         // ignore newline characters. they usually come in pairs
         // with the \r characters we use for newline detection.
-        break;
+        //break;
 
     case '\b':
         // backspace
@@ -167,7 +194,7 @@ void cmd_handler()
 
     default:
         // normal character entered. add it to the buffer
-        if(echo) stream->print(c);
+        if(echo)stream->print(c);
         *msg_ptr++ = c;
         break;
     }
@@ -187,6 +214,65 @@ void cmdPoll()
     }
 }
 
+
+#ifdef __EXTRAS__
+
+/*********************************************************************** */
+/*! 
+   Parse float form 2 arguments arg1*pow(10, arg2) 
+   Returns a float
+
+   args: narg >1 , ["arg1", "arg2"]
+*/
+/*********************************************************************** */
+
+float parse_float(int nargs, char **args){
+    float ret_value; 
+  
+    if((nargs > 0)){
+      float  tmparg1 = (float)cmdStr2Num(args[0], 10);
+      int  tmparg2 = 0;
+      if (nargs > 1){ 
+        tmparg2 = cmdStr2Num(args[1], 10);
+      }
+      ret_value =  tmparg1*pow(10.0,tmparg2);
+      //cmdGetStream()->println(ret_value,3);
+    }
+    return ret_value;
+  }
+  
+
+/*********************************************************************** */
+/*! 
+    Iterate and print all added commands 
+*/
+/*********************************************************************** */
+
+void _help(int argc, char **argv){
+    cmd_t *cmd_entry;
+    for (cmd_entry = cmd_tbl; cmd_entry != NULL; cmd_entry = cmd_entry->next){
+        stream->println(cmd_entry->cmd);
+    }
+}
+
+/*********************************************************************** */
+/*! 
+    Redirect stream during runtime 
+*/
+/*********************************************************************** */
+void cmdRedirect(Stream *str){
+    stream = str;
+}
+
+void _echo(int argc, char** args){
+    if(argc>1){
+        echo = (bool)strtol(args[1], NULL, 10);
+    }
+    stream->println(echo);
+}
+#endif
+
+
 /**************************************************************************/
 /*!
     Initialize the command line interface. This sets the terminal speed and
@@ -201,8 +287,14 @@ void cmdInit(Stream *str)
 
     // init the command table
     cmd_tbl_list = NULL;
+#ifdef __EXTRAS__
+   cmdAdd("help", _help);
+   cmdAdd("echo", _echo);
+#endif
 
 }
+
+
 
 /**************************************************************************/
 /*!

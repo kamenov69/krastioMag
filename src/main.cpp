@@ -85,10 +85,7 @@ void setup() {
                         //included:" monitor_speed = 115200 " in platformio.ini
   tasks_setup();        // All tasks setup - > tasks.cpp 
   cmdInit(&Serial);     // Init Cmd library with a stream address
-  add_commands();       // Adds commands to Cmd -> commands.cpp 
-
-  
-
+  add_commands();       // Adds commands to Cmd -> commands.cpp  
 }
 
 // 

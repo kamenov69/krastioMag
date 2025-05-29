@@ -233,21 +233,22 @@ void add_commands(void)
 {
   
   //add("serial_command", pointer to function);
-  // distance sensor 
+  
+  cmdAdd("args", _args);               // test cmd
+  cmdAdd("tstval", _tst_val);          // test cmd
+  cmdAdd("hello",_hello);              // serial return strings with name and processor
+  cmdAdd("mode", _mode);               // test cmd
+  cmdAdd("dmm",_command_distnce_read); // distance sensor 
   cmdAdd("drng", _command_distance_range);
-  cmdAdd("dmm",_command_distnce_read);
-  cmdAdd("hello",_hello); // serial return strings with name and processor
-  cmdAdd("args", _args);  // test cmd
-  cmdAdd("mode", _mode);  // test cmd
-  cmdAdd("tstval", _tst_val); // test cmd
   cmdAdd("aur", _auto_read_raw);
   cmdAdd("auv", _auto_read_volts);
-  cmdAdd("vref", _analog_set_range);
+ 
   cmdAdd("ur", _read_raw);
   cmdAdd("uv", _read_volts);
+   cmdAdd("aref", _analog_set_range);  // which ref is used
+  cmdAdd("vref",  _set_calib_vals);    // voltage of the internal ref
   cmdAdd("calibtoee",_ee_save_analog_static_vals);
   cmdAdd("calibfromee", _ee_read_analog_static_vals);
-  cmdAdd("setvref",  _set_calib_vals);
 }
 
 
@@ -263,8 +264,8 @@ void _args(int arg_cnt, char **args)
 void _hello(int arg_cnt, char **args)
 {
   Stream *s = cmdGetStream();
-  s->println("atmega2560");
   s->println(__NAME);
+  s->println("atmega2560");
   s->println();
 }
 

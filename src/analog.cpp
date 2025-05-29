@@ -44,11 +44,11 @@ void ee_read_analog_static_vals(void){
 
 
 AnalogInput::AnalogInput(uint8_t analog_pin){
-    _pin = analog_pin; // кой е реалният крак
+    _pin = analog_pin; // реалният крак
    
-    range = 0;
-     //range = 0; //ref. 5v
-    hardware_adc_range = 0; //обхват на ацп-то
+    range = 2;
+    //range = 0; //ref.2.5v
+    //hardware_adc_range = 0; //обхват на ацп-то
 
     for(uint8_t i = 0; i < BUFFER_MAX; i++ ){
         last_results[i] = analogRead(_pin);

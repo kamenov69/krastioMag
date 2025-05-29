@@ -41,10 +41,30 @@
 #ifndef CMD_H
 #define CMD_H
 
+// ===============================================
+
+#define __EXTRAS__ //? added help cpmmand
+                   // runtime steam redirection
+#ifdef __EXTRAS__
+void cmdRedirect(Stream *str);
+//#define __ADDRESS__ "1314"
+float parse_float(int , char **);
+ 
+#endif
+
+#ifndef __ADDRESS__
+ #define __INIT__ECHO true
+#else
+ #define __INIT__ECHO false
+#endif
+
+
+// ===============================================
+
+
 #define MAX_MSG_SIZE    60
 #include <stdint.h>
-
-extern bool echo;
+#include <Arduino.h>
 
 // command line structure
 typedef struct _cmd_t
@@ -59,5 +79,7 @@ void cmdPoll();
 void cmdAdd(const char *name, void (*func)(int argc, char **argv));
 Stream* cmdGetStream(void);
 uint32_t cmdStr2Num(char *str, uint8_t base);
+
+
 
 #endif //CMD_H
